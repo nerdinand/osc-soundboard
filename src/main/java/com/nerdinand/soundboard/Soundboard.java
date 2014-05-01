@@ -94,7 +94,7 @@ public class Soundboard {
         receiver = getReceiver(config.getIncomingPort());
         sender = getSender(config.getDeviceAddress(), config.getOutgoingPort());
         
-        for (Sound sound : config.getSounds()) {
+        for (Sound sound : config.getMultiToggle().getSounds()) {
             PlaySoundListener listener = new PlaySoundListener(sound);
             receiver.addListener(sound.getOscAddress(), listener);
             
@@ -137,6 +137,9 @@ public class Soundboard {
         } catch (FileNotFoundException ex) {
             throw new Exception("Soundboard config file was not found!", ex);
         }
+        
+        config.generateOscAddresses();
+        
         return config;
     }
 

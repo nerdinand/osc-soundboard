@@ -24,8 +24,6 @@
 
 package com.nerdinand.soundboard;
 
-import java.util.List;
-
 /**
  *
  * @author Ferdinand Niedermann
@@ -34,8 +32,7 @@ public class Config {
     private int incomingPort;
     private int outgoingPort;
     private String deviceAddress;
-    
-    private List<Sound> sounds;
+    private MultiToggle multiToggle;
     
     public int getIncomingPort() {
         return incomingPort;
@@ -61,13 +58,18 @@ public class Config {
         this.deviceAddress = deviceAddress;
     }
     
-    public List<Sound> getSounds() {
-        return sounds;
+    public MultiToggle getMultiToggle() {
+        return multiToggle;
     }
 
-    public void setSounds(List<Sound> sounds) {
-        this.sounds = sounds;
+    public void setMultiToggle(MultiToggle multiToggle) {
+        this.multiToggle = multiToggle;
     }
-
+    
+    public void generateOscAddresses() {
+        if (getMultiToggle() != null) {
+            getMultiToggle().generateOscAddresses();
+        }
+    }
     
 }

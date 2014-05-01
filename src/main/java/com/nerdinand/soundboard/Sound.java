@@ -47,5 +47,12 @@ public class Sound {
     public void setSoundPath(String soundPath) {
         this.soundPath = soundPath;
     }
+
+    @Override
+    public String toString() {
+        return "osc: " + getOscAddress() + ", soundPath: " + getSoundPath();
+    }
+    
+    
     
 }
