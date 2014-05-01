@@ -66,9 +66,9 @@ public class Config {
         this.multiToggle = multiToggle;
     }
     
-    public void generateOscAddresses() {
+    public void buildConfigurationTree() {
         if (getMultiToggle() != null) {
-            getMultiToggle().generateOscAddresses();
+            getMultiToggle().buildConfigurationTree();
         }
     }
     

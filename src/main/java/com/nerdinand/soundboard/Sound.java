@@ -29,15 +29,12 @@ package com.nerdinand.soundboard;
  * @author Ferdinand Niedermann
  */
 public class Sound {
-    private String oscAddress;
     private String soundPath;
+    private MultiToggleRow rowParent;
+    private int cellIndex;
 
     public String getOscAddress() {
-        return oscAddress;
-    }
-
-    public void setOscAddress(String oscAddress) {
-        this.oscAddress = oscAddress;
+        return getRowParent().getMultiToggleName() + "/" + getCellIndex() + "/" + getRowParent().getRowIndex();
     }
 
     public String getSoundPath() {
@@ -51,6 +48,22 @@ public class Sound {
     @Override
     public String toString() {
         return "osc: " + getOscAddress() + ", soundPath: " + getSoundPath();
+    }
+
+    public MultiToggleRow getRowParent() {
+        return rowParent;
+    }
+
+    void setRowParent(MultiToggleRow multiToggleRow) {
+        this.rowParent = multiToggleRow;
+    }
+
+    void setCellIndex(int cellIndex) {
+        this.cellIndex = cellIndex;
+    }
+
+    public int getCellIndex() {
+        return cellIndex;
     }
     
     

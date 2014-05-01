@@ -44,9 +44,10 @@ public class MultiToggle {
         return collectedSounds;
     }
     
-    public void generateOscAddresses() {
+    public void buildConfigurationTree() {
         for (int i = 1; i <= getMultiToggleRows().size(); i++) {
-            getMultiToggleRows().get(i - 1).generateOscAddressesFromPath(getName(), i);
+            getMultiToggleRows().get(i - 1).setIndexes(i);
+            getMultiToggleRows().get(i - 1).setParentObjects(this);
         }
     }
     

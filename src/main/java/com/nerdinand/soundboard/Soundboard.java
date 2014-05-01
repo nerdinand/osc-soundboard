@@ -138,9 +138,16 @@ public class Soundboard {
             throw new Exception("Soundboard config file was not found!", ex);
         }
         
-        config.generateOscAddresses();
+        config.buildConfigurationTree();
         
         return config;
+    }
+
+    private void debugSoundObjects(Config config) {
+        System.out.println("sounds:");
+        for (Sound sound : config.getMultiToggle().getSounds()) {
+            System.out.println("sound = " + sound.toString());
+        }
     }
 
 }
