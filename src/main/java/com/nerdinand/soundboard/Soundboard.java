@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.nerdinand.soundboard;
 
 import com.illposed.osc.OSCMessage;
@@ -30,7 +29,9 @@ import com.illposed.osc.OSCPortOut;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -53,6 +54,7 @@ public class Soundboard {
 
     static void sendOffMessage(PlaySoundListener playSoundListener) {
         String address = playSoundListener.getSound().getOscAddress();
+        Logger.getLogger(PlaySoundListener.class.getName()).log(Level.INFO, "Sending OFF message: " + address);
         sendOffMessage(address);
     }
 
@@ -62,7 +64,7 @@ public class Soundboard {
         try {
             sender.send(msg);
         } catch (IOException ex) {
-            Logger.getLogger(Soundboard.class.getName()).log(Level.SEVERE, "Off message could not be sent.", ex);
+            getLogger().log(Level.SEVERE, "Off message could not be sent.", ex);
         }
     }
 
@@ -74,7 +76,7 @@ public class Soundboard {
         // otherwise we get an java.lang.IllegalStateException: Toolkit not initialized
         // when trying to play back media
         JFXPanel fxPanel = new JFXPanel();
-        
+
         Soundboard soundBoard = new Soundboard(args[0]);
         soundBoard.go();
 
@@ -85,21 +87,24 @@ public class Soundboard {
             this.config = loadConfig(configPath);
 
         } catch (Exception ex) {
-            Logger.getLogger(Soundboard.class.getName()).log(Level.SEVERE, "A terrible error occured!", ex);
+            getLogger().log(Level.SEVERE, "A terrible error occured!", ex);
         }
 
+    }
+
+    private static Logger getLogger() {
+        return Logger.getLogger(Soundboard.class.getName());
     }
 
     private void go() throws Exception {
         receiver = getReceiver(config.getIncomingPort());
         sender = getSender(config.getDeviceAddress(), config.getOutgoingPort());
-        
-        for (Sound sound : config.getMultiToggle().getSounds()) {
-            PlaySoundListener listener = new PlaySoundListener(sound);
-            receiver.addListener(sound.getOscAddress(), listener);
-            
-            sendOffMessage(sound.getOscAddress());
-        }
+
+        addListeners();
+        initializeToggleButtons();
+
+        getLogger().log(Level.INFO, "READY!");
+
         receiver.startListening();
 
         while (!exitRequested) {
@@ -108,6 +113,22 @@ public class Soundboard {
             } catch (InterruptedException ex) {
             }
             Thread.yield();
+        }
+    }
+
+    private void addListeners() {
+        getLogger().log(Level.INFO, "Adding Listeners for addresses...");
+        for (Sound sound : config.getMultiToggle().getSounds()) {
+            PlaySoundListener listener = new PlaySoundListener(sound);
+            receiver.addListener(sound.getOscAddress(), listener);
+        }
+    }
+
+    private void initializeToggleButtons() {
+        getLogger().log(Level.INFO, "Initializing toggle buttons...");
+        for (Sound sound : config.getMultiToggle().getSounds()) {
+            sendOffMessage(sound.getOscAddress());
+            sendLabelMessage(sound);
         }
     }
 
@@ -122,10 +143,13 @@ public class Soundboard {
     }
 
     private OSCPortIn getReceiver(int port) throws Exception {
+        InetAddress address = InetAddress.getByName("0.0.0.0");
+
         try {
-            return new OSCPortIn(port);
+            DatagramSocket socket = new DatagramSocket(new InetSocketAddress(address, port));
+            return new OSCPortIn(socket);
         } catch (SocketException ex) {
-            throw new Exception("Could not open listening socket on port " + port, ex);
+            throw new Exception("Could not open listening socket on" + address + " on port " + port, ex);
         }
     }
 
@@ -137,9 +161,9 @@ public class Soundboard {
         } catch (FileNotFoundException ex) {
             throw new Exception("Soundboard config file was not found!", ex);
         }
-        
+
         config.buildConfigurationTree();
-        
+
         return config;
     }
 
@@ -150,4 +174,20 @@ public class Soundboard {
         }
     }
 
+    public static void sendLabelMessage(Sound sound) {
+        OSCMessage msg = new OSCMessage(sound.getLabelAddress());
+        msg.addArgument(sound.getName());
+
+        try {
+            Thread.sleep(15);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Soundboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            sender.send(msg);
+        } catch (IOException ex) {
+            getLogger().log(Level.SEVERE, "Label message could not be sent.", ex);
+        }
+    }
 }

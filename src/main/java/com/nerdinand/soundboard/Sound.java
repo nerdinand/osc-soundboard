@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.nerdinand.soundboard;
 
 /**
@@ -29,9 +28,19 @@ package com.nerdinand.soundboard;
  * @author Ferdinand Niedermann
  */
 public class Sound {
+
+    private String name;
     private String soundPath;
     private MultiToggleRow rowParent;
     private int cellIndex;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getOscAddress() {
         return getRowParent().getMultiToggleName() + "/" + getCellIndex() + "/" + getRowParent().getRowIndex();
@@ -65,7 +74,9 @@ public class Sound {
     public int getCellIndex() {
         return cellIndex;
     }
-    
-    
-    
+
+    public String getLabelAddress() {
+        return "/1/label" + getRowParent().getRowIndex() + "" + getCellIndex();
+    }
+
 }

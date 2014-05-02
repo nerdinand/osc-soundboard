@@ -3,25 +3,44 @@ outgoingPort: 8124
 deviceAddress: 192.168.1.2
 
 multiToggle:
-    name: /1/multitoggle1
-    multiToggleRows:
-        - sounds:
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-        - sounds:
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
-            - soundPath: "/path/to/sound-file.wav"
+  name: /1/multitoggle1
+  multiToggleRows:
+    - sounds:
+      - name: "Sound 1/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 2/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 3/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 4/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 5/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 6/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 7/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 8/1"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 9/1"
+        soundPath: "/path/to/sound-file.wav"
+
+    - sounds:
+      - name: "Sound 1/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 2/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 3/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 4/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 5/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 6/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 7/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 8/2"
+        soundPath: "/path/to/sound-file.wav"
+      - name: "Sound 9/2"
+        soundPath: "/path/to/sound-file.wav"
