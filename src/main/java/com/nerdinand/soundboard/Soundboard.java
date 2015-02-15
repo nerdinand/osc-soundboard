@@ -97,6 +97,7 @@ public class Soundboard {
     }
 
     private void go() throws Exception {
+
         receiver = getReceiver(config.getIncomingPort());
         sender = getSender(config.getDeviceAddress(), config.getOutgoingPort());
 
@@ -104,6 +105,10 @@ public class Soundboard {
         initializeToggleButtons();
 
         getLogger().log(Level.INFO, "READY!");
+
+        getLogger().log(Level.INFO, "If stuff does not work, check these settings:");
+        getLogger().log(Level.INFO, "Sending to: " + config.getDeviceAddress() + ":" + config.getOutgoingPort());
+        getLogger().log(Level.INFO, "Listening on port: " + config.getIncomingPort());
 
         receiver.startListening();
 
@@ -175,8 +180,14 @@ public class Soundboard {
     }
 
     public static void sendLabelMessage(Sound sound) {
+        String name = sound.getName();
+
+        if (name == null) {
+            name = "";
+        }
+
         OSCMessage msg = new OSCMessage(sound.getLabelAddress());
-        msg.addArgument(sound.getName());
+        msg.addArgument(name);
 
         try {
             Thread.sleep(15);

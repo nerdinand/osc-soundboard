@@ -44,16 +44,19 @@ public class PlaySoundListener implements OSCListener {
 
     public PlaySoundListener(Sound sound) {
         this.sound = sound;
-        try {
-            URL url = new URL("file://" + sound.getSoundPath());
 
-            Logger.getLogger(PlaySoundListener.class.getName()).log(Level.INFO, "Loading sound: " + url.toString());
+        if (sound.getSoundPath() != null) {
+            try {
+                URL url = new URL("file://" + sound.getSoundPath());
 
-            Media media = new Media(url.toString());
-            mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setOnEndOfMedia(createOnEndOfMedia());
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(PlaySoundListener.class.getName()).log(Level.SEVERE, "Could not load sound", ex);
+                Logger.getLogger(PlaySoundListener.class.getName()).log(Level.INFO, "Loading sound: " + url.toString());
+
+                Media media = new Media(url.toString());
+                mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setOnEndOfMedia(createOnEndOfMedia());
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(PlaySoundListener.class.getName()).log(Level.SEVERE, "Could not load sound", ex);
+            }
         }
     }
 
@@ -74,12 +77,16 @@ public class PlaySoundListener implements OSCListener {
     }
 
     private void playSound() {
-        Logger.getLogger(PlaySoundListener.class.getName()).log(Level.INFO, "Playing " + getSound().getSoundPath());
-        mediaPlayer.play();
+        if (mediaPlayer != null) {
+            Logger.getLogger(PlaySoundListener.class.getName()).log(Level.INFO, "Playing " + getSound().getSoundPath());
+            mediaPlayer.play();
+        }
     }
 
     private void stopSound() {
-        mediaPlayer.stop();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
     }
 
     private Runnable createOnEndOfMedia() {
